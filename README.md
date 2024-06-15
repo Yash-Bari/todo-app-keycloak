@@ -71,7 +71,7 @@ This is a Flask application for managing todo items with user authentication usi
 
 ### Realm Creation
 
-1. **Log in to the Keycloak admin console** at `http://localhost:8180/` with created admin user.
+1. **Log in to the Keycloak admin console** at `http://localhost:8080/` with created admin user.
 
 2. **Create a new realm**:
     - Click on `Add realm`.

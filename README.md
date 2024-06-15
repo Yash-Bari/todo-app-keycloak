@@ -14,7 +14,7 @@ This is a Flask application for managing todo items with user authentication usi
 
     ```bash
     https://github.com/Yash-Bari/todo-app-keycloak.git
-    cd flask-todo-app
+    cd todo-app-keycloak
     ```
 
 2. **activate a virtual environment**:

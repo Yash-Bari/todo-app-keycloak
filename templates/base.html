@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Todo App{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        .navbar-custom {
+            background-color: #232f3e;
+        }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link {
+            color: #ffffff;
+        }
+        .navbar-custom .nav-link:hover {
+            color: #00a8e1;
+        }
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .container-custom {
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            color: #ffffff;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .btn-custom {
+            background-color: #00a8e1;
+            border-color: #00a8e1;
+            color: #ffffff;
+        }
+        .btn-custom:hover {
+            background-color: #007bb5;
+            border-color: #007bb5;
+        }
+        .modal-header {
+            background-color: #232f3e;
+            color: #ffffff;
+        }
+        .card {
+            background-color: #34495e;
+            color: #ffffff;
+        }
+        .btn-success {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+        .btn-warning {
+            background-color: #e67e22;
+            border-color: #e67e22;
+        }
+        .form-control, .form-control-file {
+            background-color: #2c3e50;
+            border: 1px solid #00a8e1;
+            color: #ffffff;
+        }
+        .form-control::placeholder {
+            color: #b0c4de;
+        }
+        .alert-dismissible .close {
+            color: #ffffff;
+        }
+        .alert-dismissible .close:hover {
+            color: #00a8e1;
+        }       
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal.fade .modal-dialog {
+            animation: slideIn 0.5s ease-in-out;
+        }
+        
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="{{ url_for('home') }}">Todo App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if 'user' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ session['user']['email'] }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <img src="{{ user.profile_picture or url_for('static', filename='default-profile.png') }}" class="profile-picture" alt="Profile Picture" id="profilePicture">
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container container-custom">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Profile Picture Upload Modal -->
+    <div class="modal fade" id="profilePictureModal" tabindex="-1" role="dialog" aria-labelledby="profilePictureModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profilePictureModalLabel">Update Profile Picture</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('update_profile_picture') }}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="profilePictureInput"style="color: black;">Choose a new profile picture</label>
+                            <input type="file" class="form-control-file" id="profilePictureInput" name="profile_picture" required>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.flatpickr', {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+            });
+
+            // Handle profile picture click
+            document.getElementById('profilePicture').addEventListener('click', function() {
+                $('#profilePictureModal').modal('show');
+            });
+        });
+    </script>
+</body>
+</html>

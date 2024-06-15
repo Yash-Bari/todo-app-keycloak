@@ -1,0 +1,4 @@
+PyJWT==2.0.1
+Flask-GraphQL
+graphene
+flask

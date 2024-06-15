@@ -88,10 +88,10 @@ This is a Flask application for managing todo items with user authentication usi
     - Click on `Save`.
 
 2. **Configure the client**:
-   -Root URL 'http://127.0.0.1:5000'
-   -Home URL 'http://127.0.0.1:5000'
-   -Valid redirect URIs 'http://127.0.0.1:5000/auth/callback' 'http://localhost:5000/auth/callback'
-   -Valid post logout redirect URIs 'http://127.0.0.1:5000/'
+   -Root URL 'http://127.0.0.1:5000'.
+   -Home URL 'http://127.0.0.1:5000'.
+   -Valid redirect URIs 'http://127.0.0.1:5000/auth/callback' 'http://localhost:5000/auth/callback'.
+   -Valid post logout redirect URIs 'http://127.0.0.1:5000/'.
     - Click on `Save`.
 
 3. **Obtain the client secret**:

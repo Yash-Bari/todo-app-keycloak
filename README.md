@@ -59,7 +59,7 @@ This is a Flask application for managing todo items with user authentication usi
 4. **Start Keycloak**:
 
     ```bash
-   `kc.bat-start-dev`
+   kc.bat start-dev
     ```
 
 5. **Create an admin user**:

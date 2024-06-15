@@ -50,7 +50,7 @@ This is a Flask application for managing todo items with user authentication usi
 
 2. **Extract the Keycloak ZIP file** to your desired directory.
 
-3. **Navigate to the Keycloak directory**:
+3. **Navigate to the Keycloak bin directory**:
 
     ```bash
     cd path/to/keycloak/bin
